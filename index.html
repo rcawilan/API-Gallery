@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rick and Morty Gallery</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container mb-4">
+        <div class="row">
+            <div class="col">
+                <div class="display-3">
+                    Rick and Morty Gallery
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row" id="contents">
+
+        </div>
+    </div>
+    <script>
+        const statusColors = {
+            Alive: '#DEFDE0',
+            Dead: '#FDDFDF',
+            unknown: '#F5F5F5'
+        };
+        var contents = document.getElementById("contents");
+        const getCharacters = async () => {
+            for (var i = 1; i <= 50; i++) {
+                const response = await fetch('https://rickandmortyapi.com/api/character/' + i);
+                const character = await response.json();
+                var status = character.status;
+                contents.innerHTML += `
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card my-3 shadow p-5 rounded-5 text-center">
+              <div class="mx-auto rounded-circle overflow-hidden" style="width: 200px; height: 200px; background-color: `+ statusColors[status] + `;">
+                <img src="`+ character.image + `" class="w-100 h-100" style="object-fit: cover;">
+              </div>
+              <div class="my-3 h4">
+                `+ character.id + ` ` + character.name + `
+              </div>
+              <div class="my-3 rounded-5 border py-2">
+                `+ status + ` - ` + character.species + `
+              </div>
+              <div class="text-muted small">
+                `+ character.location.name + `
+              </div>
+            </div>
+          </div>
+        `;
+            }
+        }
+        getCharacters();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVlcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
